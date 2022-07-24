@@ -1,0 +1,10 @@
+{
+  "name": "MMM-KrogerApp",
+  "version": "1.2.0",
+  "description": "Connects to Kroger API developer in order to view/edit grocery list.",
+  "main": "MMM-KrogerApp.js",
+  "author": "CurlyQ12391",
+  "license": "N/A",
+  "Dependencies": {
+    }
+}
