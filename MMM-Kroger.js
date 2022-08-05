@@ -100,7 +100,7 @@ Module.register("MMM-GroceryApp", {
 		if (notification === "STARTED") {
 			this.updateDom();
 		}
-		else if (notification === "CART_DATA) {
+		else if (notification === "CART_DATA") {
 			this.loaded = true;
 			this.processChargeData(JSON.parse(payload).response);
 			this.updateDom();
