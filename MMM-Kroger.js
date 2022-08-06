@@ -7,21 +7,16 @@
  */
 
 Module.register("MMM-GroceryApp", {
-	auth: undefined,
-	code: undefined,
-	error: undefined,
-	
 	defaults: {
 		refreshInterval: 1000 * 60 * 5, // refresh every 5 minutes
 		updateInterval: 1000 * 60 * 5, // update every 5 minutes
-		
-	    debug: false,
 	},
 
 	requiresVersion: "2.1.0", // Required version of MagicMirror
 
 	start: function() {
 		var self = this;
+		Log.info("Starting module: " + this.name);
 		
 		//Flag for check if module is loaded
 		this.loaded = false;
@@ -67,10 +62,6 @@ Module.register("MMM-GroceryApp", {
 		}
 		return wrapper;
 	},
-
-    getScripts: function () {
-        return [];
-    },
 	
 	getStyles: function () {
 		return [
