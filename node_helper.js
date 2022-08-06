@@ -6,9 +6,40 @@
 
 const NodeHelper = require('node_helper');
 var request = require('request');
-var moment = require('moment');
-var accessToken = null;
 
+module.exports = NodeHelper.create({
+	start: function() {
+		console.log("Starting node helper for: " + this.name);
+	},
+	
+	config: {
+		refreshInterval: 1000 * 60 * 5, // refresh every 5 minutes
+		updateInterval: 1000 * 60 * 5, // update every 5 minutes
+	},
+	
+start: function() {
+        var self = this;
+        setTimeout(function() {
+        });
+    },
+	
+	socketNotificationReceived: function(notification, payload) {
+		if (notification === 'MMM-GroceryApp') {
+			this.sendSocketNotification('MMM-GroceryApp');
+			self.config = payload;
+			self.sendSocketNotification("STARTED", true);
+			self.getData();
+			self.started = true;
+		} else if (notification == 'CONFIG') {
+			self.sendSocketNotification("CART_DATA", self.cart_data);
+			self.sendSocketNotification("PRODUCT_SEARCH", self.product_search);
+			self.sendSocketNotification("PRODUCT_DETAILS", self.product_details);
+			self.sendSocketNotification("LOCATION_DATA", self.location_data);
+		    }
+	},
+	
+
+	
 function getToken(config) {
 	try {
 		const token = getTokenInternal(config);
@@ -51,12 +82,7 @@ const oauth2 = require('Basic').create(credentials);
 		console.log('Access Token Error', error.message);
 	}
 }
-module.exports = NodeHelper.create({
 
-	start: function() {
-		this.started = false;
-		this.config = null;
-	},
 	
 getData: function() {
 		var self = this;
@@ -140,20 +166,4 @@ function getCartData(token) {
 			getLocationData(token);
 		}
 	},
-	socketNotificationReceived: function(notification, payload) {
-		console.log("socketNotificationReceived");
-		var self = this;
-		if (notification === 'CONFIG' && self.started == false) {
-			self.config = payload;
-			self.sendSocketNotification("STARTED", true);
-			self.getData();
-			self.started = true;
-		} else if (notification == 'CONFIG') {
-			self.sendSocketNotification("CART_DATA", self.cart_data);
-			self.sendSocketNotification("PRODUCT_SEARCH", self.product_search);
-			self.sendSocketNotification("PRODUCT_DETAILS", self.product_details);
-			self.sendSocketNotification("LOCATION_DATA", self.location_data);
-		}
-	}
 });
-
