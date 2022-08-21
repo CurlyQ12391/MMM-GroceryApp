@@ -9,7 +9,7 @@
 Module.register("MMM-GroceryApp", {
 	defaults: {
 		refreshInterval: 1000 * 60 * 5, // refresh every 5 minutes
-		updateInterval: 1000 * 60 * 5, // update every 5 minutes
+		updateInterval: 1000 * 60 * 5 // update every 5 minutes
 	},
 
 	requiresVersion: "2.1.0", // Required version of MagicMirror
@@ -17,63 +17,29 @@ Module.register("MMM-GroceryApp", {
 	start: function() {
 		var self = this;
 		Log.info("Starting module: " + this.name);
-		
+
 		//Flag for check if module is loaded
 		this.loaded = false;
-		
+
 		this.sendSocketNotification("CONFIG", this.config);
 	},
-		
-	getDom: function() {
-		// create element wrapper for show into the module
-		var self = this;
-		
-		var title =  document.createElement("header");
-		title.innerHTML = "GroceryApp";
-		wrapper.appendChild(title);
 
-		// create element wrapper for show into the module
-		var wrapper = document.createElement("div");
-		wrapper.style.cssText = "float: right;";
-		
-		// If this.dataRequest is not empty
-		if (this.dataRequest) {
-			var wrapperDataRequest = document.createElement("div");
-			// check format https://jsonplaceholder.typicode.com/posts/1
-			wrapperDataRequest.innerHTML = this.dataRequest.title;
-
-			var labelDataRequest = document.createElement("label");
-			// Use translate function
-			//             this id defined in translations files
-			labelDataRequest.innerHTML = this.translate("TITLE");
-
-
-			wrapper.appendChild(labelDataRequest);
-			wrapper.appendChild(wrapperDataRequest);
-		}
-
-		// Data from helper
-		if (this.dataNotification) {
-			var wrapperDataNotification = document.createElement("div");
-			// translations  + datanotification
-			wrapperDataNotification.innerHTML =  this.translate("UPDATE") + ": " + this.dataNotification.date;
-
-			wrapper.appendChild(wrapperDataNotification);
-		}
-		return wrapper;
-	},
-	
 	getStyles: function () {
 		return [
-			"MMM-GroceryApp.css",
+			"MMM-GroceryApp.css"
 		];
 	},
-	
-	
+
+	getScripts: function () {
+		return [
+			"moment.js"
+		];
+	},
+
   getStats: function () {
     this.sendSocketNotification("UPDATE", this.config);
   },
-	
+
 	processData: function(data) {
 		var self = this;
 		this.dataRequest = data;
@@ -112,4 +78,23 @@ Module.register("MMM-GroceryApp", {
 			this.updateDom();
 		}
 	},
+
+	getDom: function() {
+		// create element wrapper for show into the module
+		var self = this;
+
+		// create element wrapper for show into the module
+		var wrapper = document.createElement("div");
+		wrapper.style.cssText = "float: right;";
+
+		// Data from helper
+		if (this.dataNotification) {
+			var wrapperDataNotification = document.createElement("div");
+			// translations  + datanotification
+			wrapperDataNotification.innerHTML =  this.translate("UPDATE") + ": " + this.dataNotification.date;
+
+			wrapper.appendChild(wrapperDataNotification);
+		}
+		return wrapper;
+}
 });
